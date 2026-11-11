@@ -1,17 +1,24 @@
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 #include <zephyr/logging/log.h>
+
 LOG_MODULE_REGISTER(race_condition_banco, LOG_LEVEL_INF);
+
 #define STACK_SIZE 1024
 #define THREAD_PRIORITY 7
 #define NUM_OPERACOES 10
 #define VALOR_TRANSACAO 50
+
+K_MUTEX_DEFINE(mutex);
+
 /* RECURSO COMPARTILHADO: Saldo bancário global */
+
 static volatile int saldo_conta = 1000;
 /* Thread 1: Realiza depósitos sucessivos na conta */
 void thread_depositar(void *p1, void *p2, void *p3)
 {
  for (int i = 0; i < NUM_OPERACOES; i++) {
+    k_mutex_lock(&mutex, K_FOREVER);
  /* 1. LEITURA: Lê o saldo global desatualizado no momento */
  int saldo_local = saldo_conta;
  LOG_INF("[Depósito] Leu saldo atual: R$ %d", saldo_local);
@@ -23,6 +30,7 @@ void thread_depositar(void *p1, void *p2, void *p3)
  saldo_local += VALOR_TRANSACAO;
  saldo_conta = saldo_local;
  LOG_INF("--> [Depósito] Atualizou saldo para: R$ %d", saldo_conta);
+    k_mutex_unlock(&mutex);
  k_msleep(5);
  }
 }
@@ -30,6 +38,7 @@ void thread_depositar(void *p1, void *p2, void *p3)
 void thread_sacar(void *p1, void *p2, void *p3)
 {
  for (int i = 0; i < NUM_OPERACOES; i++) {
+    k_mutex_lock(&mutex, K_FOREVER);
  /* 1. LEITURA */
  int saldo_local = saldo_conta;
  LOG_INF("[Saque ] Leu saldo atual: R$ %d", saldo_local);
@@ -39,6 +48,7 @@ void thread_sacar(void *p1, void *p2, void *p3)
  saldo_local -= VALOR_TRANSACAO;
  saldo_conta = saldo_local;
  LOG_INF("--> [Saque ] Atualizou saldo para: R$ %d", saldo_conta);
+ k_mutex_unlock(&mutex);
  k_msleep(5);
  }
 }
@@ -71,8 +81,7 @@ NUM_OPERACOES, NUM_OPERACOES, VALOR_TRANSACAO);
  LOG_INF("Diferença de R$ %d devido a operações concorrentes\n"
          "desprotegidas.", saldo_conta - saldo_esperado);
  } else {
- LOG_INF("STATUS : Nenhuma inconsistência detectada (Execução\n"
-         "atípica).");
+ LOG_INF("STATUS : SEM RACE CONDITION. SALDO CORRETO.");
  }
  LOG_INF("==================================================");
  return 0;
