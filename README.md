@@ -26,7 +26,9 @@ Etapas:
 
 4 - Deixe o valor de transação para ambas as threads em 100.
 
-Pós-condição: Como esperado, o código apresentou ‘race condition’, ou seja, mesmo que o saldo devesse permanecer em 2000, a memória foi sobrescrita em alguns momentos e gerou uma discrepância
+Pós-condição: Como esperado, o código apresentou ‘race condition’, ou seja, mesmo que o saldo devesse permanecer em 2000, a memória foi sobrescrita em alguns momentos e gerou uma discrepância.
+
+<img width="800" height="604" alt="Grafico" src="Evidencias\Favato-TESTE1.png" /> 
 
 #### Teste 2
 Etapas: 
@@ -40,6 +42,7 @@ Etapas:
 
 Pós-condição: Novamente, o código apresentou ‘race condition’, já que a ação de saque continua sobrescrevendo os depósitos.
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Favato-TESTE2.png" /> 
 
 #### Teste 3
 Etapas: 
@@ -55,13 +58,15 @@ Etapas:
 
 Pós-condição: Mesmo com a discrepância entre os valores de depósito e saque, é sempre o saque se sobrescreve ao depósito, o que é comprovado pela evidência do terminal:
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Favato-TESTE3.png" /> 
+
 ### Tabela Rotina 1: Planejamento de Testes (Sem Mutex) – Código do João Carvalho (Conta Bancária)
 
 | Caso de Teste | Pré-condição | Etapas de Teste | Pós-condição Esperada / Obtida |
 | :--- | :--- | :--- | :--- |
-| **1** | Placa FRDM-KL25Z recém-ligada sem lixo na memória, PlatformIO com Zephyr 4.2, prj.conf com logs habilitados e caminhos de includes corretos[cite: 2]. | 1. Deixar as duas threads com a mesma prioridade (ex: 1)[cite: 2];<br>2. Colocar a variável `saldo_conta` em 2000[cite: 2];<br>3. Colocar o número de operações em 10[cite: 2];<br>4. Deixar o valor de transação para ambas as threads em 100[cite: 2]. | Presença de Race Condition: sobrescrita de memória gerando discrepância no saldo final (Esperado: R$ 2000, Real: R$ 1000)[cite: 2]. |
-| **2** | Placa FRDM-KL25Z recém-ligada sem lixo na memória, PlatformIO com Zephyr 4.2, prj.conf com logs habilitados e caminhos de includes corretos[cite: 2]. | 1. Deixar as duas threads com a mesma prioridade (ex: 1)[cite: 3];<br>2. Colocar a variável `saldo_conta` em 10000[cite: 3];<br>3. Colocar o número de operações em 20[cite: 3];<br>4. Deixar o valor de transação para ambas as threads em 1000[cite: 3]. | Presença de Race Condition: saques continuam sobrescrevendo depósitos (Esperado: R$ 10000, Real: R$ -10000)[cite: 3]. |
-| **3** | Placa FRDM-KL25Z recém-ligada sem lixo na memória, PlatformIO com Zephyr 4.2, prj.conf com logs habilitados e caminhos de includes corretos[cite: 2]. | 1. Deixar as duas threads com a mesma prioridade (ex: 1)[cite: 3];<br>2. Colocar a variável `saldo_conta` em 1000[cite: 3];<br>3. Colocar o número de operações em 20[cite: 3];<br>4. Valor de transação para depósito em 100[cite: 3];<br>5. Valor de transação para saque em 10[cite: 3]. | Presença de Race Condition: saque se sobrescreve ao depósito (Saldo Real obtido: R$ 9800)[cite: 3]. |
+| **1** | Placa FRDM-KL25Z recém-ligada sem lixo na memória, PlatformIO com Zephyr 4.2, prj.conf com logs habilitados e caminhos de includes corretos. | 1. Deixar as duas threads com a mesma prioridade (ex: 1);<br>2. Colocar a variável `saldo_conta` em 2000;<br>3. Colocar o número de operações em 10;<br>4. Deixar o valor de transação para ambas as threads em 100. | Presença de Race Condition: sobrescrita de memória gerando discrepância no saldo final (Esperado: R$ 2000, Real: R$ 1000). |
+| **2** | Placa FRDM-KL25Z recém-ligada sem lixo na memória, PlatformIO com Zephyr 4.2, prj.conf com logs habilitados e caminhos de includes corretos. | 1. Deixar as duas threads com a mesma prioridade (ex: 1);<br>2. Colocar a variável `saldo_conta` em 10000;<br>3. Colocar o número de operações em 20;<br>4. Deixar o valor de transação para ambas as threads em 1000. | Presença de Race Condition: saques continuam sobrescrevendo depósitos (Esperado: R$ 10000, Real: R$ -10000). |
+| **3** | Placa FRDM-KL25Z recém-ligada sem lixo na memória, PlatformIO com Zephyr 4.2, prj.conf com logs habilitados e caminhos de includes corretos. | 1. Deixar as duas threads com a mesma prioridade (ex: 1);<br>2. Colocar a variável `saldo_conta` em 1000;<br>3. Colocar o número de operações em 20;<br>4. Valor de transação para depósito em 100;<br>5. Valor de transação para saque em 10. | Presença de Race Condition: saque se sobrescreve ao depósito (Saldo Real obtido: R$ 9800). |
 
 ### Planejamento de testes do código do João Favato (feito por João Carvalho)
 
@@ -79,6 +84,8 @@ Etapas:
 
 Pós-condição: Nos testes realizados, foi possível observar que a Thread de vendas sobrescreve a Thread de estoque, deixando o saldo final menor do que o esperado, como é evidenciado abaixo:
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Carvalho-TESTE1.png" /> 
+
 #### Teste 2
 
 Pré-condição: A placa foi ligada e reiniciada pelo botão de “reset”, para garantir que não houvesse nenhum lixo de memória[cite: 4].
@@ -94,10 +101,11 @@ Etapas:
 
 Pós-condição: Novamente, houve o Race Condition com a Thread de vendas sobrescrevendo a Thread de estoque, deixando o saldo final 100 unidades menor do que o esperado, como pode ser evidenciado abaixo:
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Carvalho-TESTE2.png" /> 
 
 #### Teste 3
 
-Pré-condição: A placa foi ligada e reiniciada pelo botão de “reset”, para garantir que não houvesse nenhum lixo de memória[cite: 5].
+Pré-condição: A placa foi ligada e reiniciada pelo botão de “reset”, para garantir que não houvesse nenhum lixo de memória.
 
 Etapas:
 1 - Deixe as duas Threads com a mesma prioridade (1);
@@ -108,15 +116,17 @@ Etapas:
 
 4 - Defina o estoque disponível como 1000.
 
-Pós-condição: Novamente, houve o Race Condition com a Thread de vendas sobrescrevendo a Thread de estoque, como pode ser evidenciado abaixo:[cite: 5]
+Pós-condição: Novamente, houve o Race Condition com a Thread de vendas sobrescrevendo a Thread de estoque, como pode ser evidenciado abaixo:
+
+<img width="800" height="604" alt="Grafico" src="Evidencias\Carvalho-TESTE3.png" /> 
 
 ### Tabela Rotina 2: Planejamento de Testes (Sem Mutex) – Código do João Favato (Estoque)
 
 | Caso de Teste | Pré-condição | Etapas de Teste | Pós-condição Esperada / Obtida |
 | :--- | :--- | :--- | :--- |
-| **1** | A placa foi ligada e reiniciada pelo botão de "reset", para garantir que não houvesse nenhum lixo de memória[cite: 4]. | 1. Deixar as duas Threads com a mesma prioridade (7)[cite: 4];<br>2. Defina o número de operações como 10[cite: 4];<br>3. Defina o valor de cada operação como 10[cite: 4];<br>4. Defina o estoque disponível como 100[cite: 4]. | Presença de Race Condition: Thread de vendas sobrescreve a de estoque (Estoque esperado: 100, Estoque real: 80)[cite: 4]. |
-| **2** | A placa foi ligada e reiniciada pelo botão de "reset", para garantir que não houvesse nenhum lixo de memória[cite: 4]. | 1. Deixar as duas Threads com a mesma prioridade (1)[cite: 4];<br>2. Defina o número de operações como 20[cite: 4];<br>3. Defina o valor de cada operação como 20[cite: 4];<br>4. Defina o estoque disponível como 200[cite: 4]. | Presença de Race Condition: Thread de vendas sobrescreve a de estoque (Estoque esperado: 200, Estoque real: 100)[cite: 4, 5]. |
-| **3** | A placa foi ligada e reiniciada pelo botão de "reset", para garantir que não houvesse nenhum lixo de memória[cite: 5]. | 1. Deixar as duas Threads com a mesma prioridade (1)[cite: 5];<br>2. Defina o número de operações como 30[cite: 5];<br>3. Defina o valor de cada operação como 60[cite: 5];<br>4. Defina o estoque disponível como 1000[cite: 5]. | Presença de Race Condition: Thread de vendas sobrescreve a de estoque (Estoque esperado: 1000, Estoque real: 820)[cite: 5]. |
+| **1** | A placa foi ligada e reiniciada pelo botão de "reset", para garantir que não houvesse nenhum lixo de memória. | 1. Deixar as duas Threads com a mesma prioridade (7);<br>2. Defina o número de operações como 10;<br>3. Defina o valor de cada operação como 10;<br>4. Defina o estoque disponível como 100. | Presença de Race Condition: Thread de vendas sobrescreve a de estoque (Estoque esperado: 100, Estoque real: 80). |
+| **2** | A placa foi ligada e reiniciada pelo botão de "reset", para garantir que não houvesse nenhum lixo de memória. | 1. Deixar as duas Threads com a mesma prioridade (1);<br>2. Defina o número de operações como 20;<br>3. Defina o valor de cada operação como 20;<br>4. Defina o estoque disponível como 200. | Presença de Race Condition: Thread de vendas sobrescreve a de estoque (Estoque esperado: 200, Estoque real: 100). |
+| **3** | A placa foi ligada e reiniciada pelo botão de "reset", para garantir que não houvesse nenhum lixo de memória. | 1. Deixar as duas Threads com a mesma prioridade (1);<br>2. Defina o número de operações como 30;<br>3. Defina o valor de cada operação como 60;<br>4. Defina o estoque disponível como 1000. | Presença de Race Condition: Thread de vendas sobrescreve a de estoque (Estoque esperado: 1000, Estoque real: 820). |
 
 
 ## ETAPA 3 - CORREÇÃO E RETESTE
@@ -146,6 +156,8 @@ Etapas:
 
 Pós-condição: Dessa vez, os resultados do teste mostram que o código devolveu o saldo correto, atestando, assim, que as alterações no código consertaram o problema da 'race condition'.
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Favato(M)-TESTE1.png" /> 
+
 #### Teste 2
 
 Etapas:
@@ -158,6 +170,8 @@ Etapas:
 4 - Deixe o valor de transação para ambas as threads em 1000.
 
 Pós-condição: Mesmo mudando os valores das variáveis envolvidas nos cálculos, como o saldo da conta, o número de operações e o valor de cada operação da thread, o código continua funcionando corretamente e devolve o valor esperado.
+
+<img width="800" height="604" alt="Grafico" src="Evidencias\Favato(M)-TESTE2.png" /> 
 
 #### Teste 3
 
@@ -174,13 +188,16 @@ Etapas:
 
 Pós-condição: Como nesse caso as operações dão valores diferentes, o saldo foi aumentado nos esperados R$ 1800,00, 20 operações com saldo líquido de +90, assim chegando ao resultado final sem 'race condition'.
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Favato(M)-TESTE3.png" /> 
+
+
 ### Tabela Rotina 3: Correção e Reteste (Com Mutex) – Código do João Carvalho (Conta Bancária)
 
 | Caso de Teste | Pré-condição | Etapas de Teste | Pós-condição Esperada / Obtida |
 | :--- | :--- | :--- | :--- |
-| **1** | Placa FRDM-KL25Z, Zephyr 4.2 no PlatformIO, logs habilitados, sem lixo de memória e com `k_mutex` implementado[cite: 6]. | 1. Deixar as duas threads com a mesma prioridade (ex: 1)[cite: 6];<br>2. Colocar a variável `saldo_conta` em 2000[cite: 6];<br>3. Colocar o número de operações em 10[cite: 6];<br>4. Deixar o valor de transação para ambas as threads em 100[cite: 6]. | Sucesso: sem Race Condition, saldo correto (Saldo esperado: R$ 2000, Saldo real: R$ 2000)[cite: 6]. |
-| **2** | Placa FRDM-KL25Z, Zephyr 4.2 no PlatformIO, logs habilitados, sem lixo de memória e com `k_mutex` implementado[cite: 6]. | 1. Deixar as duas threads com a mesma prioridade (ex: 1)[cite: 7];<br>2. Colocar a variável `saldo_conta` em 10000[cite: 7];<br>3. Colocar o número de operações em 20[cite: 7];<br>4. Deixar o valor de transação para ambas as threads em 1000[cite: 7]. | Sucesso: sem Race Condition, saldo correto (Saldo esperado: R$ 10000, Saldo real: R$ 10000)[cite: 7]. |
-| **3** | Placa FRDM-KL25Z, Zephyr 4.2 no PlatformIO, logs habilitados, sem lixo de memória e com `k_mutex` implementado[cite: 6]. | 1. Deixar as duas threads com a mesma prioridade (ex: 1)[cite: 7];<br>2. Colocar a variável `saldo_conta` em 1000[cite: 7];<br>3. Colocar o número de operações em 20[cite: 7];<br>4. Valor de transação para depósito em 100[cite: 7];<br>5. Valor de transação para saque em 10[cite: 7]. | Sucesso: sem Race Condition, saldo correto (Saldo inicial: R$ 1000, Saldo final: R$ 2800)[cite: 7]. |
+| **1** | Placa FRDM-KL25Z, Zephyr 4.2 no PlatformIO, logs habilitados, sem lixo de memória e com `k_mutex` implementado. | 1. Deixar as duas threads com a mesma prioridade (ex: 1);<br>2. Colocar a variável `saldo_conta` em 2000;<br>3. Colocar o número de operações em 10;<br>4. Deixar o valor de transação para ambas as threads em 100. | Sucesso: sem Race Condition, saldo correto (Saldo esperado: R$ 2000, Saldo real: R$ 2000). |
+| **2** | Placa FRDM-KL25Z, Zephyr 4.2 no PlatformIO, logs habilitados, sem lixo de memória e com `k_mutex` implementado. | 1. Deixar as duas threads com a mesma prioridade (ex: 1);<br>2. Colocar a variável `saldo_conta` em 10000;<br>3. Colocar o número de operações em 20;<br>4. Deixar o valor de transação para ambas as threads em 1000. | Sucesso: sem Race Condition, saldo correto (Saldo esperado: R$ 10000, Saldo real: R$ 10000). |
+| **3** | Placa FRDM-KL25Z, Zephyr 4.2 no PlatformIO, logs habilitados, sem lixo de memória e com `k_mutex` implementado. | 1. Deixar as duas threads com a mesma prioridade (ex: 1);<br>2. Colocar a variável `saldo_conta` em 1000;<br>3. Colocar o número de operações em 20;<br>4. Valor de transação para depósito em 100;<br>5. Valor de transação para saque em 10. | Sucesso: sem Race Condition, saldo correto (Saldo inicial: R$ 1000, Saldo final: R$ 2800). |
 
 ### Análise e reteste do código do João Favato (feito por João Carvalho)
 
@@ -199,6 +216,8 @@ Etapas:
 
 Pós-condição: Depois de realizar o primeiro teste, foi verificado que o resultado final foi exatamente o resultado esperado, graças à eliminação do race condition pelo mutex, como pode ser visto pelo output abaixo:
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Carvalho(M)-TESTE1.png" /> 
+
 
 #### Teste 2
 
@@ -213,6 +232,9 @@ Etapas:
 
 Pós-condição: Novamente, o valor do estoque final foi exatamente o esperado, evidenciando que a utilização de mutex é válida e funcional para solucionar problemas de Race Condition:
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Carvalho(M)-TESTE2.png" /> 
+
+
 #### Teste 3
 
 Etapas: 
@@ -226,13 +248,16 @@ Etapas:
 
 Pós-condição: A saída (output) provou, mais uma vez, que o uso de Mutex é uma solução válida contra Deadlocks e Race Conditions.
 
+<img width="800" height="604" alt="Grafico" src="Evidencias\Carvalho(M)-TESTE3.png" /> 
+
+
 ### Tabela Rotina 4: Correção e Reteste (Com Mutex) – Código do João Favato (Estoque)
 
 | Caso de Teste | Pré-condição | Etapas de Teste | Pós-condição Esperada / Obtida |
 | :--- | :--- | :--- | :--- |
-| **1** | A placa foi ligada e reiniciada pelo botão de "reset", com `k_mutex` implementado para exclusão mútua[cite: 7, 8]. | 1. Deixar as duas Threads com a mesma prioridade (7)[cite: 8];<br>2. Defina o número de operações como 10[cite: 8];<br>3. Defina o valor de cada operação como 10[cite: 8];<br>4. Defina o estoque disponível como 100[cite: 8]. | Sucesso: integridade mantida (Estoque esperado: 100, Estoque real: 100)[cite: 8]. |
-| **2** | A placa foi ligada e reiniciada pelo botão de "reset", com `k_mutex` implementado para exclusão mútua[cite: 7, 8]. | 1. Deixar as duas Threads com a mesma prioridade (1)[cite: 8];<br>2. Defina o número de operações como 20[cite: 8];<br>3. Defina o valor de cada operação como 20[cite: 8];<br>4. Defina o estoque disponível como 200[cite: 8]. | Sucesso: integridade mantida (Estoque esperado: 200, Estoque real: 200)[cite: 8]. |
-| **3** | A placa foi ligada e reiniciada pelo botão de "reset", com `k_mutex` implementado para exclusão mútua[cite: 7, 9]. | 1. Deixar as duas Threads com a mesma prioridade (1)[cite: 8];<br>2. Defina o número de operações como 30[cite: 8];<br>3. Defina o valor de cada operação como 60[cite: 8];<br>4. Defina o estoque disponível como 1000[cite: 9]. | Sucesso: integridade mantida (Estoque esperado: 1000, Estoque real: 1000)[cite: 9]. |
+| **1** | A placa foi ligada e reiniciada pelo botão de "reset", com `k_mutex` implementado para exclusão mútua. | 1. Deixar as duas Threads com a mesma prioridade (7);<br>2. Defina o número de operações como 10;<br>3. Defina o valor de cada operação como 10;<br>4. Defina o estoque disponível como 100. | Sucesso: integridade mantida (Estoque esperado: 100, Estoque real: 100). |
+| **2** | A placa foi ligada e reiniciada pelo botão de "reset", com `k_mutex` implementado para exclusão mútua. | 1. Deixar as duas Threads com a mesma prioridade (1);<br>2. Defina o número de operações como 20;<br>3. Defina o valor de cada operação como 20;<br>4. Defina o estoque disponível como 200. | Sucesso: integridade mantida (Estoque esperado: 200, Estoque real: 200). |
+| **3** | A placa foi ligada e reiniciada pelo botão de "reset", com `k_mutex` implementado para exclusão mútua. | 1. Deixar as duas Threads com a mesma prioridade (1);<br>2. Defina o número de operações como 30;<br>3. Defina o valor de cada operação como 60;<br>4. Defina o estoque disponível como 1000. | Sucesso: integridade mantida (Estoque esperado: 1000, Estoque real: 1000). |
 
 ## ETAPA 4 - AVALIAÇÃO INTERNA
 
